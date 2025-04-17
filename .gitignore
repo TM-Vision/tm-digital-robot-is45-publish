@@ -1,5 +1,4 @@
-/app
-env_isaacsim/
+sdk_isaacsim/
 .workspace/
 .last_settings_cache.txt
 .env

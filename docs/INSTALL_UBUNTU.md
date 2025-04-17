@@ -5,91 +5,73 @@
 ```bash
 mkdir -p ~/projects
 cd ~/projects
-git clone https://github.com/tm-vision/tm-digital-robot-publish
-cd ~/projects/tm-digital-robot-publish
+git clone https://github.com/tm-vision/tm-digital-robot-is45-publish
+cd ~/projects/tm-digital-robot-is45-publish
 ```
 
 -   Please checkout the latest or specific version and then create new branch for your custom development
 -   Checkout the latest version, you can use the command below
 
 ```bash
-git checkout v2.22.15
-git branch v2.22.15_custom
-git checkout v2.22.15_custom
+git checkout v2.23.1
+git branch v2.23.1_custom
+git checkout v2.23.1_custom
 ```
-
-## Make sure you have Python 3.10 installed
-
--   please use command below to check if you have Python 3.10.xx installed
-
-```bash
-python --version
-```
-
--   below is the example of the output if you have Python 3.10 installed
-
-    ![](images/20241211110125.png)
 
 ## Install the Isaac Sim
 
-### Create a virtual environment
+## Install Isaac Sim
+
+-   Download the Linux version of Isaac Sim (6.7 GB) from the [Latest Release](https://docs.isaacsim.omniverse.nvidia.com/4.5.0/installation/download.html#latest-release).
+-   Unzip it to your home directory and rename the folder to **isaac-sim-4.5**.
+-   Verify the installation with the following command:
 
 ```bash
-cd ~/projects/tm-digital-robot-publish
-python3.10 -m venv env_isaacsim
-source env_isaacsim/bin/activate
-pip install --upgrade pip
+ls ~/isaac-sim-4.5
 ```
 
-### Install Isaac Sim - Python packages
+## Link Isaac Sim SDK
+
+-   For convenenit to use install sense as coding, we can link isaac sim sdk to our project
 
 ```bash
-pip install isaacsim==4.2.0.2 --extra-index-url https://pypi.nvidia.com
+cd ~/projects/tm-digital-robot-is45-publish
+mkdir sdk_isaacsim
+cd sdk_isaacsim
+ln -s ~/isaac-sim-4.5/exts
+ln -s ~/isaac-sim-4.5/extscache
+ln -s ~/isaac-sim-4.5/kit
 ```
 
-### Install Isaac Sim - Python packages cached extension dependencies
+-   Then, we need to install python modules required
 
 ```bash
-pip install isaacsim-extscache-physics==4.2.0.2 isaacsim-extscache-kit==4.2.0.2 isaacsim-extscache-kit-sdk==4.2.0.2 --extra-index-url https://pypi.nvidia.com
-```
+cd ~/projects/tm-digital-robot-is45-publish
+~/isaac-sim-4.5/kit/python/bin/python3 -m pip install --upgrade pip
+~/isaac-sim-4.5/kit/python/bin/python3 -m pip install --isolated --no-cache-dir --no-deps -r requirements.txt
 
-### Install other required packages
-
-```bash
-pip install -r requirements.txt
+ls -al  ~/isaac-sim-4.5/kit/python/bin/python3
 ```
 
 ### Start Isaac Sim
 
--   Make sure you are in the virtual environment env_isaacsim
+-   To start isaac sim by command below
 
 ```bash
-cd ~/projects/tm-digital-robot-publish
-source env_isaacsim/bin/activate
+cd ~/isaac-sim-4.5
+./isaac-sim.sh
 ```
 
--   Start Isaac Sim by command below
+-   If everything alright, you should see the Isaac Sim window, it means you have successfully installed Isaac Sim
 
-```bash
-isaacsim omni.isaac.sim
-```
-
--   You will see the License Agreement at the first time you start Isaac Sim, key in `y` if you agree with the License Agreement
-
-    ![](images/20241211113533.png)
-
--   After while, you will see the Isaac Sim window
-
-    ![](images/20241211113858.png)
-
--   If you can see the Isaac Sim window, it means you have successfully installed Isaac Sim.
+    ![](images/20250417152028.png)
 
 ## Open the source code by Visual Studio Code
 
 -   Open your source code by command below
 
 ```bash
-cd ~/projects/tm-digital-robot-publish
+cd ~/projects/tm-digital-robot-is45-publish
 code .
 ```
 

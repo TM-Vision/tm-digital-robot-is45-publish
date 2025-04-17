@@ -1,6 +1,6 @@
 ## TM Digital Robot Extension for NVIDIA Omniverse Isaac Sim
 
-## Introduction 123
+## Introduction
 
 **_Important:_** This extension is in **beta testing** and **not for production use**.
 
@@ -34,7 +34,7 @@ Refer to the [Release Notes](RELEASE_NOTES.md) for details.
 
 The TM Digital Robot Extension for Isaac Sim requires the following steps:
 
--   Step1: Install Isaac Sim 4.2
+-   Step1: Install Isaac Sim 4.5
     -   [For Windows](./docs/INSTALL_WINDOWS.md)
     -   [For Ubuntu](./docs/INSTALL_UBUNTU.md)
 -   [Step2: Install TM Digital Robot Extension](./docs/INSTALL_EXTENSION.md)

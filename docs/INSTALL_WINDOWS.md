@@ -5,52 +5,40 @@
 ```bash
 mkdir %USERPROFILE%\projects
 cd %USERPROFILE%\projects
-git clone https://github.com/tm-vision/tm-digital-robot-publish
-cd %USERPROFILE%\projects\tm-digital-robot-publish
+git clone https://github.com/tm-vision/tm-digital-robot-is45-publish
+cd %USERPROFILE%\projects\tm-digital-robot-is-45-publish
 ```
 
 -   Please checkout the latest or specific version and then create new branch for your custom development
 -   Checkout the latest version, you can use the command below
 
 ```bash
-git checkout v2.22.15
-git branch v2.22.15_custom
-git checkout v2.22.15_custom
+git checkout v2.23.1
+git branch v2.23.1_custom
+git checkout v2.23.1_custom
 ```
-
-## Make sure you have Python 3.10 installed
-
--   please use command below to check if you have Python 3.10.xx installed
-
-```bash
-python --version
-```
-
--   below is the example of the output if you have Python 3.10 installed
-
-    ![](images/20241211154822.png)
 
 ## Install the Isaac Sim
 
-### Create a virtual environment
+-   Follow the official instruction
+
+## Link Isaac Sim SDK
 
 ```bash
-cd %USERPROFILE%\projects\tm-digital-robot-publish
-python3.10 -m venv env_isaacsim
-env_isaacsim\Scripts\activate
-python.exe -m pip install --upgrade pip
+cd %USERPROFILE%\projects\tm-digital-robot-is45-publish
+mkdir sdk_isaacsim
+cd sdk_isaacsim
+mklink /D exts %USERPROFILE%\isaac-sim-4.5\exts"
+mklink /D extscache %USERPROFILE%\isaac-sim-4.5\extscache"
+mklink /D kit %USERPROFILE%\isaac-sim-4.5\kit"
 ```
 
-### Install Isaac Sim - Python packages
+-   Install python modules required
 
 ```bash
-pip install isaacsim==4.2.0.2 --extra-index-url https://pypi.nvidia.com
-```
-
-### Install Isaac Sim - Python packages cached extension dependencies
-
-```bash
-pip install isaacsim-extscache-physics==4.2.0.2 isaacsim-extscache-kit==4.2.0.2 isaacsim-extscache-kit-sdk==4.2.0.2 --extra-index-url https://pypi.nvidia.com
+cd %USERPROFILE%\projects\tm-digital-robot-is45-publish
+%USERPROFILE%\isaac-sim-4.5\kit\python\python.exe -m pip install --upgrade pip
+%USERPROFILE%\isaac-sim-4.5\kit\python\python.exe -m pip install --isolated --no-cache-dir --no-deps -r requirements.txt
 ```
 
 **HINT**: If you encounter issues of **this system does not have Windows Long Path support enabled**, please refer to [Enable long paths in Windows 10, version 1607, and later](https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=powershell#enable-long-paths-in-windows-10-version-1607-and-later) to solve the issue.
