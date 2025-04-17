@@ -3,14 +3,14 @@ order = 10000
 
 [package]
 # Semantic Versioning is used: https://semver.org/
-version = "2.22.15"
+version = "2.23.1"
 
 # Lists people or organizations that are considered the "authors" of the package.
 authors = ["NVIDIA"]
 
 # The title and description fields are primarily for displaying extension info in UI
-title = "TM Digital Robot"
-description = "TM Digital Robot"
+title = "TM Digital Robot - Issac Sim 4.5"
+description = "TM Digital Robot for Omniverse Isaac Sim 4.5"
 
 # Path (relative to the root) or content of readme markdown file for UI.
 readme = "docs/README.md"
