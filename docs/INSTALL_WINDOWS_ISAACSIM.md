@@ -23,6 +23,10 @@ isaac-sim.bat
 
     ![](images/20250418104253.png)
 
+-   It's a great idea to create a desktop shortcut for easy access later.
+
+    ![](images/20250418134819.png)
+
 ## 3. Next Step
 
 -   Proceed to the [Setup Source Code](INSTALL_WINDOWS_CODE.md) for the next steps.

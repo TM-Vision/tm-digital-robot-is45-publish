@@ -25,9 +25,6 @@ cd ~/isaac-sim-4.5
 
     ![](images/20250418092831.png)
 
--   It's a great idea to create a desktop shortcut for easy access later.
-
-    ![](images/20250418134819.png)
 
 ## 3. Next Step
 

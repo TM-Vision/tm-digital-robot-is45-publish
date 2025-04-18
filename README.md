@@ -2,7 +2,7 @@
 
 ## Introduction
 
-**_Important:_** This extension is in **beta testing** and **not for production use**.
+**_Important:_** This extension is in **beta testing**.
 
 TM Digital Robot Extension is a simulation tool that enables developers to control virtual robots using TMSimulation(TMflow). It simplifies robot motion and vision application learning in Isaac Sim's virtual environment, eliminating the need for a physical robot. Pre-built Motion and Vision interfaces handle complex communication between TMRobot and Isaac Sim, streamlining integration tasks.
 
@@ -42,7 +42,6 @@ The TM Digital Robot Extension for Isaac Sim requires the following steps:
     -   [For Ubuntu](./docs/INSTALL_UBUNTU_CODE.md)
 -   [Step3: Install Extension](./docs/INSTALL_EXTENSION.md)
 -   [Step4: Setup TM Simulator](./docs/SETUP_TMSIMULATOR.md)
--   [Step5: Install Cache](./docs/INSTALL_CACHE.md)
 
 ## Play with Sample Cases
 
@@ -58,11 +57,9 @@ Run the sample cases to know how simulation works and usage with TM Digital Robo
 
 If you encounter issues installing Isaac Sim, refer to the official link below for more information.
 
--   Detailed installation instructions: [Isaac Sim Python Environment Installation](https://docs.omniverse.nvidia.com/isaacsim/latest/installation/install_python.html).
 -   Startup issues: [Isaac Sim 4.5 Known Issues](https://docs.isaacsim.omniverse.nvidia.com/4.5.0/overview/known_issues.html).
 
 ## References
 
--   [Omniverse IsaacSim Documentation](https://docs.omniverse.nvidia.com/isaacsim/latest/index.html)
+-   [Omniverse IsaacSim Documentation](https://docs.isaacsim.omniverse.nvidia.com/latest/index.html)
 -   [Nvidia Developer Forums](https://forums.developer.nvidia.com/)
--   [Nucleus Workstation Installation (Optional)](./docs/INSTALL_NUCLEUS.md)
