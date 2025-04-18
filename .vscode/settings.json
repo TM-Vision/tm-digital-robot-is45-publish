@@ -548,18 +548,18 @@
     "search.exclude": {
         "**/.git/**": true,
         "**/.workspace/**": true,
-        "**/__pycache__/**": true
-        // "**/sdk_isaacsim/exts/**": true,
-        // "**/sdk_isaacsim/extscache/**": true,
-        // "**/sdk_isaacsim/kit/**": true
+        "**/__pycache__/**": true,
+        "**/sdk_isaacsim/exts/**": false,
+        "**/sdk_isaacsim/extscache/**": false,
+        "**/sdk_isaacsim/kit/**": false
     },
     "files.exclude": {
         "**/__init__.py": true,
         "**/.git/**": true,
-        "**/__pycache__/**": true
-        // "**/sdk_isaacsim/exts/**": true,
-        // "**/sdk_isaacsim/extscache/**": true,
-        // "**/sdk_isaacsim/kit/**": true
+        "**/__pycache__/**": true,
+        "**/sdk_isaacsim/exts/**": false,
+        "**/sdk_isaacsim/extscache/**": false,
+        "**/sdk_isaacsim/kit/**": false
     },
     "flake8.args": ["--max-line-length=120"]
 }

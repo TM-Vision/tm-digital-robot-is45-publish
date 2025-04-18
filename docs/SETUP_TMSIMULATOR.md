@@ -1,4 +1,4 @@
-# Setup TMSimulator
+# TMSimulator Setup
 
 Before running the sample project, you need to set up TMSimulator to communicate with Isaac Sim, please follow the steps below:
 

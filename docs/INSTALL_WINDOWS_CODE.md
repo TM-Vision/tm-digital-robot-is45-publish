@@ -1,16 +1,16 @@
-# Isaac Sim Installation guide for Windows
+# Extension Code Setup for Window
 
-## Download the TM Digital Robot Extension
+## 1. Clone the TM Digital Robot Extension Code
+
+-   Create a directory for your projects and clone the repository:
 
 ```bash
 mkdir %USERPROFILE%\projects
 cd %USERPROFILE%\projects
 git clone https://github.com/tm-vision/tm-digital-robot-is45-publish
-
 ```
 
--   Please checkout the latest or specific version and then create new branch for your custom development
--   Checkout the latest version, you can use the command below
+-   Check out the latest or a specific version, then create a new branch for custom development:
 
 ```bash
 cd %USERPROFILE%\projects\tm-digital-robot-is45-publish
@@ -19,11 +19,9 @@ git branch v2.23.1_custom
 git checkout v2.23.1_custom
 ```
 
-## Install the Isaac Sim
+## 2. Link Isaac Sim SDK
 
--   Follow the official instruction
-
-## Link Isaac Sim SDK
+-   For easier development, link the Isaac Sim SDK to the project directory:
 
 ```bash
 cd %USERPROFILE%\projects\tm-digital-robot-is45-publish
@@ -34,38 +32,29 @@ mklink /J extscache %USERPROFILE%\isaac-sim-4.5\extscache
 mklink /J kit %USERPROFILE%\isaac-sim-4.5\kit
 ```
 
-### Install other required packages
+## 3. Install Required Python Modules
+
+-   Install the necessary Python modules by running the following commands:
 
 ```bash
 cd %USERPROFILE%\projects\tm-digital-robot-is45-publish
 %USERPROFILE%\isaac-sim-4.5\kit\python\python.exe -m pip install --upgrade pip
 %USERPROFILE%\isaac-sim-4.5\kit\python\python.exe -m pip install --isolated --no-cache-dir --no-deps -r requirements.txt
 ```
-
-### Start Isaac Sim
-
-```bash
-cd %USERPROFILE%\isaac-sim-4.5
-isaac-sim.bat
-```
-
--   If everything alright, you should see the Isaac Sim window, it means you have successfully installed Isaac Sim
-
-    ![](images/20250417152028.png)
-
+ --no-warn-script-location
 ## Open the source code by Visual Studio Code
 
 -   Open your source code by command below
 
 ```bash
-cd %USERPROFILE%\projects\tm-digital-robot-publish
+cd %USERPROFILE%\projects\tm-digital-robot-is45-publish
 code .
 ```
 
 -   You should see the Visual Studio Code window with the source code, the extension.py that allows you customize as you need
 
-    ![](images/20241231165335.png)
+    ![](images/20250418102703.png)
 
-## Next step
+## 4. Next Step
 
--   Next, please go to [Installation of TM-Digital Robot Extension](INSTALL_EXTENSION.md) for the following step
+-   Continue to [Install Extension](INSTALL_EXTENSION.md) for further steps.

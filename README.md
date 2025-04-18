@@ -1,4 +1,4 @@
-## TM Digital Robot Extension for NVIDIA Omniverse Isaac Sim
+## TM Digital Robot Extension for NVIDIA Omniverse Isaac Sim 4.5
 
 ## Introduction
 
@@ -35,11 +35,14 @@ Refer to the [Release Notes](RELEASE_NOTES.md) for details.
 The TM Digital Robot Extension for Isaac Sim requires the following steps:
 
 -   Step1: Install Isaac Sim 4.5
-    -   [For Windows](./docs/INSTALL_WINDOWS.md)
-    -   [For Ubuntu](./docs/INSTALL_UBUNTU.md)
--   [Step2: Install TM Digital Robot Extension](./docs/INSTALL_EXTENSION.md)
--   [Step3: Setup TM Simulator](./docs/SETUP_TMSIMULATOR.md)
--   [Step4: Install Cache](./docs/INSTALL_CACHE.md)
+    -   [For Windows](./docs/INSTALL_WINDOWS_ISAACSIM.md)
+    -   [For Ubuntu](./docs/INSTALL_UBUNTU_ISAACSIM.md)
+-   Step2: Setup Source Code
+    -   [For Windows](./docs/INSTALL_WINDOWS_CODE.md)
+    -   [For Ubuntu](./docs/INSTALL_UBUNTU_CODE.md)
+-   [Step3: Install Extension](./docs/INSTALL_EXTENSION.md)
+-   [Step4: Setup TM Simulator](./docs/SETUP_TMSIMULATOR.md)
+-   [Step5: Install Cache](./docs/INSTALL_CACHE.md)
 
 ## Play with Sample Cases
 
@@ -56,7 +59,7 @@ Run the sample cases to know how simulation works and usage with TM Digital Robo
 If you encounter issues installing Isaac Sim, refer to the official link below for more information.
 
 -   Detailed installation instructions: [Isaac Sim Python Environment Installation](https://docs.omniverse.nvidia.com/isaacsim/latest/installation/install_python.html).
--   Startup issues: [Isaac Sim Known Issues](https://docs.omniverse.nvidia.com/isaacsim/latest/known_issues.html).
+-   Startup issues: [Isaac Sim 4.5 Known Issues](https://docs.isaacsim.omniverse.nvidia.com/4.5.0/overview/known_issues.html).
 
 ## References
 
