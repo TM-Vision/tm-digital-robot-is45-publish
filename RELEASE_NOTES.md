@@ -1,5 +1,5 @@
 # Release Notes
 
-## [2.23.1] - 2025-04-xx
+## [2.23.1] - 2025-04-24
 
--   Upgrade testing, do not use this version
+-   Upgrade to support Isaac Sim 4.5.

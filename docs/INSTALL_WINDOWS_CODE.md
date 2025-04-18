@@ -38,11 +38,9 @@ mklink /J kit %USERPROFILE%\isaac-sim-4.5\kit
 
 ```bash
 cd %USERPROFILE%\projects\tm-digital-robot-is45-publish
-%USERPROFILE%\isaac-sim-4.5\kit\python\python.exe -m pip install --upgrade pip
-%USERPROFILE%\isaac-sim-4.5\kit\python\python.exe -m pip install --isolated --no-cache-dir --no-deps -r requirements.txt
+%USERPROFILE%\isaac-sim-4.5\kit\python\python.exe -m pip install --no-warn-script-location --upgrade pip
+%USERPROFILE%\isaac-sim-4.5\kit\python\python.exe -m pip install --no-warn-script-location --isolated --no-cache-dir --no-deps -r requirements.txt
 ```
-
---no-warn-script-location
 
 ## Open the source code by Visual Studio Code
 

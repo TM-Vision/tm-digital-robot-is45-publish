@@ -38,8 +38,8 @@ ln -s ~/isaac-sim-4.5/kit
 
 ```bash
 cd ~/projects/tm-digital-robot-is45-publish
-~/isaac-sim-4.5/kit/python/bin/python3 -m pip install --upgrade pip
-~/isaac-sim-4.5/kit/python/bin/python3 -m pip install --isolated --no-cache-dir --no-deps -r requirements.txt
+~/isaac-sim-4.5/kit/python/bin/python3 -m pip install --no-warn-script-location --upgrade pip
+~/isaac-sim-4.5/kit/python/bin/python3 -m pip install --no-warn-script-location --isolated --no-cache-dir --no-deps -r requirements.txt
 ```
 
 ## Open the source code by Visual Studio Code
