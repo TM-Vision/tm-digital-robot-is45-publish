@@ -25,4 +25,4 @@ isaac-sim.bat
 
 ## 3. Next Step
 
--   Proceed to the [Setup Source Code](INSTALL_UBUNTU_CODE.md) for the next steps.
+-   Proceed to the [Setup Source Code](INSTALL_WINDOWS_CODE.md) for the next steps.

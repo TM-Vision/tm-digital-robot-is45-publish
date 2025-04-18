@@ -41,7 +41,9 @@ cd %USERPROFILE%\projects\tm-digital-robot-is45-publish
 %USERPROFILE%\isaac-sim-4.5\kit\python\python.exe -m pip install --upgrade pip
 %USERPROFILE%\isaac-sim-4.5\kit\python\python.exe -m pip install --isolated --no-cache-dir --no-deps -r requirements.txt
 ```
- --no-warn-script-location
+
+--no-warn-script-location
+
 ## Open the source code by Visual Studio Code
 
 -   Open your source code by command below
