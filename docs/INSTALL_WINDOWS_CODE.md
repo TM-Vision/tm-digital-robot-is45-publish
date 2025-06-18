@@ -14,9 +14,9 @@ git clone https://github.com/tm-vision/tm-digital-robot-is45-publish
 
 ```bash
 cd %USERPROFILE%\projects\tm-digital-robot-is45-publish
-git checkout v2.23.1
-git branch v2.23.1_custom
-git checkout v2.23.1_custom
+git checkout v2.23.2
+git branch v2.23.2_custom
+git checkout v2.23.2_custom
 ```
 
 ## 2. Link Isaac Sim SDK

@@ -55,6 +55,7 @@ Run the sample cases to know how simulation works and usage with TM Digital Robo
 -   [Case 3: Collaboration accessories](./docs/CASE03.md)
 -   [Case 4: FOV Settings of External Camera](./docs/CASE04.md)
 -   [Case 5: Understanding Scene Creation and Switching](./docs/CASE05.md)
+-   [Case 6: Example of Prismatic Joint Gripper](./docs/CASE06.md)
 
 ## Troubleshooting
 
