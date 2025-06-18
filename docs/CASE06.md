@@ -10,13 +10,15 @@ This case demonstrates how to integrate a prismatic joint gripper, Roboiq Hand-E
 
 -   Navigate to the TMflow project folder:
 
+    -   Ubuntu
+
     ```bash
-    # Ubuntu path
     ~/projects/tm-digital-robot-is45-publish/examples/prismatic_joint_gripper/tmflow_sample_project
     ```
 
+    -   Windows
+
     ```bash
-    # Windows path
     %USERPROFILE%\projects\tm-digital-robot-is45-publish\examples\prismatic_joint_gripper\tmflow_sample_project
     ```
 
@@ -26,25 +28,29 @@ This case demonstrates how to integrate a prismatic joint gripper, Roboiq Hand-E
 
 -   Locate the sample scene folder:
 
+    -   Ubuntu
+
     ```bash
-    # Ubuntu path
     ~/projects/tm-digital-robot-is45-publish/examples/prismatic_joint_gripper/isaacsim_sample_scene
     ```
 
+    -   Windows
+
     ```bash
-    # Windows path
     %USERPROFILE%\projects\tm-digital-robot-is45-publish\examples\prismatic_joint_gripper\isaacsim_sample_scene
     ```
 
 -   Copy the folder `20250719_170219_prismatic_joint_gripper` to your workspace:
 
+    -   Ubuntu
+
     ```bash
-    # Ubuntu path
     ~/projects/tm-digital-robot-is45-publish/exts/tmrobot.digital_robot/tmrobot/digital_robot/.workspace/
     ```
 
+    -   Windows
+
     ```bash
-    # Windows path
     %USERPROFILE%\projects\tm-digital-robot-is45-publish\exts\tmrobot.digital_robot\tmrobot\digital_robot\.workspace\
     ```
 
@@ -52,13 +58,15 @@ This case demonstrates how to integrate a prismatic joint gripper, Roboiq Hand-E
 
 -   Open the following file with a text editor:
 
+    -   Ubuntu
+
     ```bash
-    # Ubuntu path
     ~/projects/tm-digital-robot-is45-publish/exts/tmrobot.digital_robot/tmrobot/digital_robot/.workspace/20250719_170219_prismatic_joint_gripper/settings.json
     ```
 
+    -   Windows
+
     ```bash
-    # Windows path
     %USERPROFILE%\projects\tm-digital-robot-is45-publish\exts\tmrobot.digital_robot\tmrobot\digital_robot\.workspace\20250719_170219_prismatic_joint_gripper\settings.json
     ```
 
@@ -70,13 +78,15 @@ This case demonstrates how to integrate a prismatic joint gripper, Roboiq Hand-E
 
 -   Open the file with a text editor:
 
+    -   Ubuntu
+
     ```bash
-    # Ubuntu paths
     ~/projects/tm-digital-robot-is45-publish/exts/tmrobot.digital_robot/tmrobot/digital_robot/.last_settings_cache.txt
     ```
 
+    -   Windows
+
     ```bash
-    # Windows path
     %USERPROFILE%\projects\tm-digital-robot-is45-publish\exts\tmrobot.digital_robot\tmrobot\digital_robot\.last_settings_cache.txt
     ```
 
@@ -88,25 +98,29 @@ This case demonstrates how to integrate a prismatic joint gripper, Roboiq Hand-E
 
 -   Backup or rename the existing `extension.py` file in the TM Digital Robot extension folder:
 
+    -   Ubuntu
+
     ```bash
-    # Ubuntu path
     ~/projects/tm-digital-robot-is45-publish/exts/tmrobot.digital_robot/tmrobot/digital_robot/extension.py
     ```
 
+    -   Windows
+
     ```bash
-    # Windows path
     %USERPROFILE%\projects\tm-digital-robot-is45-publish\exts\tmrobot.digital_robot\tmrobot\digital_robot\extension.py
     ```
 
 -   Copy the example of extension.py of prismatic joint gripper below to the TM Digital Robot extension folder:
 
+    -   Ubuntu
+
     ```bash
-    # Ubuntu path
     ~/projects/tm-digital-robot-is45-publish/examples/prismatic_joint_gripper/extension.py
     ```
 
+    -   Windows
+
     ```bash
-    # Windows path
     %USERPROFILE%\projects\tm-digital-robot-is45-publish\examples\prismatic_joint_gripper\extension.py
     ```
 
