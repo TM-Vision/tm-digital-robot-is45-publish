@@ -1,7 +1,3 @@
-# === (Revolute Joint Gripper Example)  ===
-# === (extension_revolute_joint_gripper)  ===
-# === (.workspace: 20250723_170219_revolute_joint_gripper)  ===
-# === (TMflow: revolute_gripper) ===
 import asyncio
 import gc
 import logging
@@ -13,6 +9,7 @@ import traceback  # type: ignore
 from datetime import datetime, timezone  # type: ignore
 from typing import List  # type: ignore
 
+import numpy as np  # noqa
 import omni.kit.commands
 import omni.kit.viewport.utility as vp_utils  # noqa
 from isaacsim.core.api.world.world import World
@@ -26,7 +23,11 @@ from isaacsim.core.utils.stage import (
     update_stage_async,
 )
 from isaacsim.core.utils.types import ArticulationAction
-from pxr import Gf, Sdf, Usd, UsdGeom, UsdPhysics
+from isaacsim.robot.surface_gripper._surface_gripper import (  # noqa
+    Surface_Gripper,
+    Surface_Gripper_Properties,
+)
+from pxr import Gf, Sdf, Usd, UsdGeom
 
 # isort: off
 from tmrobot.digital_robot.models.digital_camera import DigitalCamera  # type: ignore
@@ -43,13 +44,11 @@ from tmrobot.digital_robot.ui.extension_ui import ExtensionUI  # type: ignore
 # isort: on
 
 logger = logging.getLogger(__name__)
-# viewport = vp_utils.get_active_viewport()
 
 
 class TMDigitalRobotExtension(omni.ext.IExt):
     def _initialize(self):
         # fmt: off
-        logger.info(f"ADVANCED_MODE: {const.ADVANCED_MODE}")
         self._extension_setting = ExtensionSetting()
         self._models = {}
         self._virtual_camera_thread: threading.Thread = None
@@ -62,11 +61,8 @@ class TMDigitalRobotExtension(omni.ext.IExt):
         self._robot_settings: List[RobotSetting] = []
         self._set_queue = queue.Queue()
         self._simulation_count = 0
-        self.is_server_right = True
-        self._fps_accumulated = 0
         self._surface_gripper_state = 0
         self._surface_gripper = None
-        self._parallel_gripper = None
         self._workpiece_id = 0
         self._world: World = World()
         self._default_workpiece_position = Gf.Vec3d(0, 0.25, 0.5155)
@@ -86,6 +82,9 @@ class TMDigitalRobotExtension(omni.ext.IExt):
         self._initialize()
 
     def on_shutdown(self):
+        if hasattr(self, "_virtual_camera_server"):
+            if self._virtual_camera_server is not None:
+                asyncio.ensure_future(self._virtual_camera_server.stop())
 
         if self._world.stage.GetPrimAtPath(Sdf.Path("/World")).IsValid():
             for robot in const.ROBOT_LIST:
@@ -100,12 +99,6 @@ class TMDigitalRobotExtension(omni.ext.IExt):
         if self._world.physics_callback_exists("sim_step"):
             self._world.remove_physics_callback("sim_step")
 
-        try:
-
-            self._console("Services stopped")
-        except Exception as e:
-            logger.error(f"Services stopped with error: {e}")
-
         for handler in logger.handlers[:]:
             logger.removeHandler(handler)
             handler.close()
@@ -115,7 +108,6 @@ class TMDigitalRobotExtension(omni.ext.IExt):
         if self._world is not None:
             self._world.stop()
             self._world.clear_all_callbacks()
-            self._current_tasks = None
 
         self._robot_settings = []
         self._ext_ui.clear()
@@ -133,47 +125,20 @@ class TMDigitalRobotExtension(omni.ext.IExt):
 
         # Allow to customize the scene camera position as your need
         omni.kit.commands.execute(
-            "TransformPrimCommand",
-            path=Sdf.Path("/World/scene_camera"),
-            new_transform_matrix=Gf.Matrix4d(
-                0.8298550011891574,
-                0.5577537949824364,
-                0.015855005015250473,
-                0.0,
-                -0.26721647219682687,
-                0.37231280629270574,
-                0.8888073645380826,
-                0.0,
-                0.48983265916844054,
-                -0.7418179550625211,
-                0.45800664575837086,
-                0.0,
-                3.440894953941123,
-                -4.445627744176188,
-                3.634579022939584,
-                1.0,
+            "ChangeProperty",
+            prop_path=Sdf.Path(f"{const.SCENE_CAMERA_PATH}.xformOp:translate"),
+            value=Gf.Vec3d(7, 4, 3),
+            prev=None,
+        )
+
+        omni.kit.commands.execute(
+            "ChangeProperty",
+            prop_path=Sdf.Path(f"{const.SCENE_CAMERA_PATH}.xformOp:orient"),
+            value=Gf.Quatd(
+                0.38,
+                Gf.Vec3d(0.30, 0.53, 0.70),
             ),
-            old_transform_matrix=Gf.Matrix4d(
-                0.8268451487357817,
-                0.5622061177433676,
-                0.015855005015250473,
-                0.0,
-                -0.26921375271225,
-                0.3708711691321597,
-                0.888807364538083,
-                0.0,
-                0.49381277359206743,
-                -0.7391744429283766,
-                0.4580066457583708,
-                0.0,
-                3.440894953941123,
-                -4.445627744176188,
-                3.634579022939584,
-                1.0,
-            ),
-            time_code=Usd.TimeCode.Default(),
-            had_transform_at_key=False,
-            usd_context_name="",
+            prev=None,
         )
 
     def _on_start_service(self):
@@ -249,6 +214,42 @@ class TMDigitalRobotExtension(omni.ext.IExt):
             ).IsValid():
                 self._world.stage.RemovePrim(self._default_workpieces_prim_path)
 
+            # Create new workpiece
+            omni.kit.commands.execute(
+                "CreatePrimWithDefaultXform",
+                prim_type="Xform",
+                prim_path=self._default_workpieces_prim_path,
+                attributes={},
+                select_new_prim=True,
+            )
+
+            # === (Surface Gripper Example) Uncomment the code below to control the surface gripper ===
+            # The example is only for the first robot Robot01 with model TM12S
+            # if self._robot_settings[0].name == const.ROBOT_LIST[0]:
+            #     sgp = Surface_Gripper_Properties()
+            #     sgp.parentPath = f"/World/{self._robot_settings[0].name}/{self._robot_settings[0].model.lower()}/body/flange_link"  # noqa
+            #     sgp.offset.p.x = 0
+            #     sgp.offset.p.z = 0.337
+            #     sgp.offset.r = [0.7071, 0, 0.7071, 0]
+            #     sgp.gripThreshold = 0.005
+            #     sgp.forceLimit = 1.0e6
+            #     sgp.torqueLimit = 1.0e7
+            #     sgp.bendAngle = np.pi / 4
+            #     sgp.stiffness = 1.0e8
+            #     sgp.damping = 1.0e1
+            #     sgp.retryClose = True
+            #     self._surface_gripper = Surface_Gripper()
+            #     self._surface_gripper.initialize(sgp)
+
+            #     if self._is_prim_exist("/World/Accessories/sugar_box"):
+            #         omni.kit.commands.execute(
+            #             "ToggleActivePrims",
+            #             stage_or_context=omni.usd.get_context().get_stage(),
+            #             prim_paths=[Sdf.Path("/World/Accessories/sugar_box")],
+            #             active=False,
+            #         )
+            #     self._spawn_workpiece()
+
         # Play the world
         async def _play_world_async():
             await self._world.initialize_simulation_context_async()
@@ -314,81 +315,30 @@ class TMDigitalRobotExtension(omni.ext.IExt):
         try:
             motion: EthernetData = self._motion_queue.get_nowait()
 
-            # motion.joint_radian = motion.joint_radian.extend([10, 10, 10, 10, 10, 10, 10, 10])
             self._dg_robots[motion.robot_name].apply_action(
                 ArticulationAction(joint_positions=motion.joint_radian)
             )
 
-            if motion.robot_name == const.ROBOT_LIST[0]:
-                if self._surface_gripper_state != motion.ctrl_do[0]:
-                    self._surface_gripper_state = motion.ctrl_do[0]
+            # === (Surface Gripper Example) Uncomment the code below to control the surface gripper ===
+            # if motion.robot_name == const.ROBOT_LIST[0]:
+            #     if self._surface_gripper_state != motion.ctrl_do[0]:
+            #         self._surface_gripper_state = motion.ctrl_do[0]
+            #         if self._surface_gripper_state == 1:
+            #             self._surface_gripper.close()
+            #             self._console("Surface Gripper suck")
+            #             self._ethernet_masters[motion.robot_name].set_end_di(0, 0)
 
-                    if self._surface_gripper_state == 1:
-
-                        omni.kit.commands.execute(
-                            "ChangeProperty",
-                            prop_path=Sdf.Path(
-                                (
-                                    "/World/Test/Robotiq_2F_85_edit/Robotiq_2F_85/"
-                                    "finger_joint.drive:angular:physics:targetPosition"
-                                )
-                            ),
-                            value=45,
-                            prev=None,
-                            usd_context_name=omni.usd.get_context().get_stage(),
-                        )
-
-                        # omni.kit.commands.execute(
-                        #     "ChangeProperty",
-                        #     prop_path=Sdf.Path(
-                        #         (
-                        #             "/World/Robot01/Robotiq_2F_85_edit/Robotiq_2F_85/"
-                        #             "finger_joint.drive:angular:physics:targetPosition"
-                        #         )
-                        #     ),
-                        #     value=45,
-                        #     prev=None,
-                        #     usd_context_name=omni.usd.get_context().get_stage(),
-                        # )
-
-                        self._console("Parallel Gripper is closed")
-
-                    if self._surface_gripper_state == 0:
-
-                        omni.kit.commands.execute(
-                            "ChangeProperty",
-                            prop_path=Sdf.Path(
-                                (
-                                    "/World/Test/Robotiq_2F_85_edit/Robotiq_2F_85/"
-                                    "finger_joint.drive:angular:physics:targetPosition"
-                                )
-                            ),
-                            value=0,
-                            prev=None,
-                            usd_context_name=omni.usd.get_context().get_stage(),
-                        )
-
-                        # omni.kit.commands.execute(
-                        #     "ChangeProperty",
-                        #     prop_path=Sdf.Path(
-                        #         (
-                        #             "/World/Robot01/Robotiq_2F_85_edit/Robotiq_2F_85/"
-                        #             "finger_joint.drive:angular:physics:targetPosition"
-                        #         )
-                        #     ),
-                        #     value=0,
-                        #     prev=None,
-                        #     usd_context_name=omni.usd.get_context().get_stage(),
-                        # )
-
-                        self._console("Parallel Gripper is opened")
+            #         if self._surface_gripper_state == 0:
+            #             self._surface_gripper.open()
+            #             self._console("Surface Gripper release")
+            #             self._spawn_workpiece()
+            #             self._ethernet_masters[motion.robot_name].set_end_di(0, 1)
 
         except queue.Empty:
-            logger.warning("Motion queue is empty")
+            # logger.warning("Motion queue is empty")
             pass
         except Exception as e:  # noqa
-            logger.warning(f"{motion.robot_name}: failed to update robot motion: {e}")
-            # print(json.dumps(motion.__dict__))
+            # logger.warning(f"{motion.robot_name}: failed to update robot motion: {e}")
             pass
 
     def _on_stop_service(self):
@@ -429,6 +379,7 @@ class TMDigitalRobotExtension(omni.ext.IExt):
                 task
                 for task in asyncio.all_tasks()
                 if task is not asyncio.current_task()
+                and task.get_coro().__name__ in ["_server_main_loop", "start"]
             ]
             for task in tasks:
                 task.cancel()
@@ -517,11 +468,26 @@ class TMDigitalRobotExtension(omni.ext.IExt):
         prim_range = prim_bbox.ComputeAlignedRange()
         prim_size: Gf.Vec3d = prim_range.GetSize()
 
-        self._console(f"Get prim size(Meter): {prim_size} {prim_path}")
+        # Get the changed size of the prim
+        x = f"{prim_size[0]:.4f}"
+        y = f"{prim_size[1]:.4f}"
+        z = f"{prim_size[2]:.4f}"
+        self._console(f"Get prim size(Meter): x={x}, y={y}, z={z} {prim_path}")
 
         return prim_size
 
-    def _set_prim_size(self, prim_path, target_size) -> None:
+    def _set_prim_size(self, prim_path: str, target_size: tuple) -> None:
+        def __get_prim_size(prim_path: str) -> Gf.Vec3d:
+            bbox_cache = UsdGeom.BBoxCache(
+                Usd.TimeCode.Default(), includedPurposes=[UsdGeom.Tokens.default_]
+            )
+            bbox_cache.Clear()
+            prim = self._world.stage.GetPrimAtPath(Sdf.Path(prim_path))
+            prim_bbox = bbox_cache.ComputeWorldBound(prim)
+            prim_range = prim_bbox.ComputeAlignedRange()
+            prim_size: Gf.Vec3d = prim_range.GetSize()
+            return prim_size
+
         # Reset the prim scale to 1, 1, 1
         omni.kit.commands.execute(
             "ChangeProperty",
@@ -531,7 +497,7 @@ class TMDigitalRobotExtension(omni.ext.IExt):
         )
 
         # Get the original size of the prim
-        origin_size = self._get_prim_size(prim_path)
+        origin_size = __get_prim_size(prim_path)
         x = target_size[0] / origin_size[0]
         y = target_size[1] / origin_size[1]
         z = target_size[2] / origin_size[2]
@@ -545,7 +511,7 @@ class TMDigitalRobotExtension(omni.ext.IExt):
         )
 
         # Get the changed size of the prim
-        changed_size = self._get_prim_size(prim_path)
+        changed_size = __get_prim_size(prim_path)
         x = f"{changed_size[0]:.4f}"
         y = f"{changed_size[1]:.4f}"
         z = f"{changed_size[2]:.4f}"
@@ -559,6 +525,9 @@ class TMDigitalRobotExtension(omni.ext.IExt):
         cx, cy, cz = [round(coord, 4) for coord in prim.GetPrim().GetAttribute("xformOp:translate").Get()]
         tx, ty, tz = [round(coord, 4) for coord in target_position]
         # fmt: on
+
+        # print(f"tx: {tx}, ty: {ty}, tz: {tz}")
+        # print(f"cx: {cx}, cy: {cy}, cz: {cz}")
 
         if cx == tx and cy == ty and cz == tz:
             return True
@@ -587,36 +556,12 @@ class TMDigitalRobotExtension(omni.ext.IExt):
 
         return False
 
-    def _console(self, message):
+    def _console(self, message: str):
         current_time = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
 
         print(f"{current_time} [Info] [tmrobot.digital_robot] {message}")
         logger.info(message)
 
-    def _get_weight(self, prim_path: str) -> float:
-        prim = self._world.stage.GetPrimAtPath(prim_path)
-        if not prim.IsValid():
-            self._console(f"Prim not found at path: {prim_path}")
-            return 0.0
-
-        # Use the stage and path to get the MassAPI
-        mass_api = UsdPhysics.MassAPI.Get(self._world.stage, prim.GetPath())
-        if not mass_api:
-            self._console(f"MassAPI not available for prim: {prim_path}")
-            return 0.0
-
-        # Get the mass attribute
-        mass_attr = mass_api.GetMassAttr()
-        if mass_attr and mass_attr.HasAuthoredValue():
-            mass = mass_attr.Get()
-            self._console(f"The mass of the prim is {mass} kg.")
-            return mass
-        else:
-            self._console(
-                f"The mass attribute is not authored for this prim: {prim_path}"
-            )
-            return 0.0
-
     def _post_load_scene(self):
-        # Do your custom actions after loading the scene
+        # Do your custom actions after loading the scene, for example get the size of the prim
         pass
