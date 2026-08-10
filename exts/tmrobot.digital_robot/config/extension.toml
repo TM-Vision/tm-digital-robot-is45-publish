@@ -3,7 +3,7 @@ order = 10000
 
 [package]
 # Semantic Versioning is used: https://semver.org/
-version = "v2.23.2"
+version = "2.24.0"
 
 # Lists people or organizations that are considered the "authors" of the package.
 authors = ["NVIDIA"]
@@ -61,6 +61,7 @@ log.outputStreamLevel = "info"
 
 # Hiding Known Warning: [Warning] [omni.hydra] Mesh '/World/AMR_Robot/Robot01/tm12s/body/link_1/visuals' has corrupted data in primvar
 log.channels."omni.hydra" = "error"
+
 
 # Hiding Known Warning: [Warning] [omni.usd] Warning: in SdfPath at line 81 of /builds/omniverse/usd-ci/USD/pxr/usd/sdf/path.cpp -- Ill-formed SdfPath <>: syntax error
 log.channels."omni.usd" = "error"

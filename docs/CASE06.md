@@ -143,16 +143,18 @@ This case demonstrates how to integrate a prismatic joint gripper, Roboiq Hand-E
 
 ---
 
-Congratulations! You've successfully set up the prismatic joint gripper example with TM Digital Robot.
+Now! You've successfully set up the prismatic joint gripper example with TM Digital Robot.
 
 The configurations and how prismatic joins assembled for the `Roboiq Hand-E` gripper can be found under `Robot1` [Ref.1], and gripper control (open/close) logic can be found in `extension.py` [Ref.2].
 
--   [Ref.1] Hint: Required a fixed joint to connect the gripper to the robot arm, to avoid the nested Articulation root.
+-   [Ref.1] Required a fixed joint to connect the gripper to the robot arm, to avoid the nested Articulation root.
 
     ![](images/20250616140656.png)
 
     ![](images/20250616141943.png)
 
--   [Ref.2]
+    ![](images/20250916090656.png)
+
+-   [Ref.2] Control gripper open or close by Digital DO
 
     ![](images/20250616141620.png)
