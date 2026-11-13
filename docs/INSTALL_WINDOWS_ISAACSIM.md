@@ -2,7 +2,7 @@
 
 ## 1. Download Isaac Sim 4.5
 
--   Download the Windows version of Isaac Sim (6.5 GB) from the [Latest Release](https://download.isaacsim.omniverse.nvidia.com/isaac-sim-standalone%404.5.0-rc.36%2Brelease.19112.f59b3005.gl.windows-x86_64.release.zip).
+-   Download the Windows version of Isaac Sim (6.5 GB) from the [link](https://download.isaacsim.omniverse.nvidia.com/isaac-sim-standalone%404.5.0-rc.36%2Brelease.19112.f59b3005.gl.windows-x86_64.release.zip).
 -   Extract the downloaded file to your home directory and rename the folder to **isaac-sim-4.5**.
 -   Verify the installation by running the following command. You should see the files listed as shown below:
 
