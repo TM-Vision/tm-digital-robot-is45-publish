@@ -2,7 +2,7 @@
 
 ## 1. Download Isaac Sim 4.5
 
--   Download the Linux version of Isaac Sim (6.7 GB) from the [Latest Release](https://docs.isaacsim.omniverse.nvidia.com/4.5.0/installation/download.html#latest-release).
+-   Download the Linux version of Isaac Sim (6.7 GB) from the [Latest Release](https://download.isaacsim.omniverse.nvidia.com/isaac-sim-standalone-4.5.0-linux-x86_64.zip).
 -   Extract the downloaded file to your home directory and rename the folder to **isaac-sim-4.5**.
 -   Verify the installation by running the following command. You should see the files listed as shown below:
 
